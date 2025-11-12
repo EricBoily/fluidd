@@ -779,32 +779,35 @@ export default class FileSystem extends Mixins(StateMixin, FilesMixin, ServicesM
         ? mode === 'view'
         : this.rootProperties.canView.includes(file.extension)
 
-      // Grab the file. This should provide a dialog.
-      const response = await this.getFile(
-        file.filename,
-        this.currentPath,
-        file.size,
-        {
-          responseType: viewOnly ? 'arraybuffer' : 'text',
-          transformResponse: [v => v]
-        }
-      )
-
       if (viewOnly) {
-        // Open the file preview dialog.
-        const type = response.headers['content-type']
-        const blob = new Blob([response.data], { type })
+        const response = await this.getFile<Blob>(
+          file.filename,
+          this.currentPath,
+          file.size,
+          {
+            responseType: 'blob'
+          }
+        )
+
         this.filePreviewState = {
           open: true,
           file,
           filename: file.filename,
           extension: file.extension,
-          src: URL.createObjectURL(blob),
-          type,
+          src: URL.createObjectURL(response.data),
+          type: response.data.type,
           readonly: file.permissions === 'r' || this.rootProperties.readonly
         }
       } else {
-        // Open the edit dialog.
+        const response = await this.getFile<string>(
+          file.filename,
+          this.currentPath,
+          file.size,
+          {
+            responseType: 'text'
+          }
+        )
+
         this.fileEditorDialogState = {
           open: true,
           contents: response.data,
@@ -947,6 +950,17 @@ export default class FileSystem extends Mixins(StateMixin, FilesMixin, ServicesM
         const klipperSaveAndRestartAction: KlipperSaveAndRestartAction = this.$typedState.config.uiSettings.editor.klipperSaveAndRestartAction
 
         switch (klipperSaveAndRestartAction) {
+          case 'auto': {
+            const isSimulavrMcu: boolean = this.$typedGetters['printer/getIsSimulavrMcu']
+
+            if (isSimulavrMcu) {
+              this.serviceRestartKlipper()
+            } else {
+              this.firmwareRestartKlippy()
+            }
+            break
+          }
+
           case 'host-restart':
             this.restartKlippy()
             break

@@ -387,6 +387,7 @@ app:
       not_valid_fluidd_backup_file: Not a valid Fluidd backup file!
       fluidd_settings_backup_failed: Failed to backup Fluidd settings!
       fluidd_settings_restore_failed: Failed to restore Fluidd settings!
+      gcode_preview_failed: Failed to preview G-code file!
     simple_form:
       error:
         arrayofnums: Only numbers
@@ -578,6 +579,7 @@ app:
       webrtc_camera_streamer: WebRTC (camera-streamer)
       video: IP Camera
       iframe: HTTP page
+      uv4l_mjpeg_stream: UV4L-MJPEG Stream
       webrtc_go2rtc: WebRTC (go2rtc)
       webrtc_mediamtx: WebRTC (MediaMTX)
     camera_rotate_options:
