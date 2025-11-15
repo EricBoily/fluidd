@@ -197,7 +197,7 @@ export default class BedMeshCard extends Mixins(StateMixin, ToolheadMixin, Brows
   }
 
   calibrate () {
-    this.sendGcode('BED_MESH_CALIBRATE', this.$waits.onMeshCalibrate)
+    this.sendGcode('_FIX_BED_MESH_CALIBRATE', this.$waits.onMeshCalibrate)
   }
 
   get matrix (): MatrixType {
