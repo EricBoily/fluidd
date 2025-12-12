@@ -123,13 +123,13 @@ export const actions = {
         }
 
         case 'button': {
-          const [text, command, color] = param.split('|')
+          const [text, command, color, hexcolor] = param.split('|')
 
           const item: PromptDialogItemButton = {
             type: 'button',
             text,
             command,
-            color
+            color: hexcolor ? '#' + hexcolor : color
           }
 
           commit('setPromptDialogItem', item)

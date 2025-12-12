@@ -362,7 +362,7 @@ export default class BedMesh extends Mixins(StateMixin, ToolheadMixin) {
   }
 
   calibrate () {
-    this.sendGcode('BED_MESH_CALIBRATE', this.$waits.onMeshCalibrate)
+    this.sendGcode('_FIX_BED_MESH_CALIBRATE', this.$waits.onMeshCalibrate)
   }
 
   async clearMesh () {
