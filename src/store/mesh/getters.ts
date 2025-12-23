@@ -93,7 +93,13 @@ export const getters = {
     }
 
     return profiles.sort((a, b) =>
-      +(b.name === 'default') - +(a.name === 'default') || a.name.localeCompare(b.name)
+      a.name === 'default'
+        ? -1
+        : (
+            b.name === 'default'
+              ? 1
+              : a.name.localeCompare(b.name)
+          )
     )
   },
 

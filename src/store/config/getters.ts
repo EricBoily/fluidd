@@ -3,6 +3,7 @@ import type { ConfigState, TemperaturePreset } from './types'
 import type { RootState } from '../types'
 import type { Heater, Fan } from '../printer/types'
 import type { AppDataTableHeader } from '@/types'
+import md5 from 'md5'
 
 export const getters = {
   getCurrentInstance: (state) => {
@@ -11,10 +12,14 @@ export const getters = {
   },
 
   getInstances: (state) => {
-    const instances = [...state.instances]
-
+    const instances = [
+      ...state.instances
+    ].sort((a, b) =>
+      a.active
+        ? -1
+        : (b.active ? 1 : a.name.localeCompare(b.name))
+    )
     return instances
-      .sort((a, b) => +b.active - +a.active || a.name.localeCompare(b.name))
   },
 
   /**
@@ -104,5 +109,14 @@ export const getters = {
           ...header,
           ...configuredHeaders.find(p => p.value === header.value)
         }))
+  },
+
+  getTokenKeys: (state) => {
+    const url = state.apiUrl
+    const hash = (url) ? md5(url) : ''
+    return {
+      'user-token': `user-token-${hash}`,
+      'refresh-token': `refresh-token-${hash}`
+    }
   }
 } satisfies GetterTree<ConfigState, RootState>
