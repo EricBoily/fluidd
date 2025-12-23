@@ -182,7 +182,7 @@ export default class ZHeightAdjust extends Mixins(StateMixin) {
    */
   sendZAdjustGcode (direction: '+' | '-') {
     const zHomed: boolean = this.$typedGetters['printer/getHomedAxes']('z')
-    const gcode = `SET_GCODE_OFFSET Z_ADJUST=${direction}${this.moveDistance} MOVE=${+zHomed}`
+    const gcode = `SET_GCODE_OFFSET Z_ADJUST=${direction}${this.moveDistance} MOVE=${+zHomed} FROM=fluidd`
     this.sendGcode(gcode, this.$waits.onZAdjust)
   }
 
