@@ -188,7 +188,7 @@ import type { VersionInfo } from '@/store/version/types'
   }
 })
 export default class VersionSettings extends Mixins(StateMixin) {
-  updatesChecked = false
+  updatesChecked: boolean | null = false
 
   informationDialogState: any = {
     open: false,
