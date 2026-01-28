@@ -15,7 +15,7 @@
           small
           color="primary"
           class="mr-2"
-          :disabled="!hasUpdates || hasInvalidComponent || isRefreshing || printerPrinting"
+          :disabled="!updatesChecked || !hasUpdates || hasInvalidComponent || isRefreshing || printerPrinting"
           @click="handleUpdateComponent('all')"
         >
           <v-icon left>
@@ -123,7 +123,7 @@
 
           <version-status
             :has-update="hasUpdate(component.name)"
-            :disabled="isRefreshing || printerPrinting"
+            :disabled="!updatesChecked || isRefreshing || printerPrinting"
             :loading="isRefreshing"
             :dirty="isDirty(component)"
             :valid="isValid(component)"
@@ -174,7 +174,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import VersionStatus from './VersionStatus.vue'
 import VersionCommitHistoryDialog from './VersionInformationDialog.vue'
 import StateMixin from '@/mixins/state'
@@ -188,9 +188,18 @@ import type { VersionInfo } from '@/store/version/types'
   }
 })
 export default class VersionSettings extends Mixins(StateMixin) {
+  updatesChecked = false
+
   informationDialogState: any = {
     open: false,
     component: null
+  }
+
+  @Watch('isRefreshing')
+  onIsRefreshingChanged (val: boolean) {
+    if (!val && this.updatesChecked === null) {
+      this.updatesChecked = true
+    }
   }
 
   get components (): VersionInfo[] {
@@ -289,6 +298,7 @@ export default class VersionSettings extends Mixins(StateMixin) {
     } else {
       SocketActions.machineUpdateStatus(true)
     }
+    this.updatesChecked = null
   }
 
   getBaseUrl (component: VersionInfo) {
