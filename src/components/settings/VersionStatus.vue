@@ -62,6 +62,7 @@
 
     <app-btn
       v-if="dirty || !valid"
+      :disabled="disabled"
       small
       text
       color="error"
