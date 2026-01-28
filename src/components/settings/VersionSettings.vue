@@ -14,20 +14,6 @@
           outlined
           small
           color="primary"
-          class="mr-2"
-          :disabled="!updatesChecked || !hasUpdates || hasInvalidComponent || isRefreshing || printerPrinting"
-          @click="handleUpdateComponent('all')"
-        >
-          <v-icon left>
-            $download
-          </v-icon>
-          {{ $t('app.version.btn.update_all') }}
-        </app-btn>
-
-        <app-btn
-          outlined
-          small
-          color="primary"
           :disabled="isRefreshing || printerPrinting"
           @click="forceCheck()"
         >
