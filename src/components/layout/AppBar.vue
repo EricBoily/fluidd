@@ -490,7 +490,7 @@ export default class AppBar extends Mixins(StateMixin, ServicesMixin, FilesMixin
       }
     }
 
-    this.sendGcode('SAVE_CONFIG', this.$waits.onSaveConfig)
+    this.sendGcode('_SAVE_CONFIG', this.$waits.onSaveConfig)
   }
 }
 </script>
